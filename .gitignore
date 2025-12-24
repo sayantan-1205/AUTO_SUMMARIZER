@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.env
+.ipynb_checkpoints/
+.vscode/
+venv/
+
+# ignore trained model files
+model/auto_summarizer_model/
