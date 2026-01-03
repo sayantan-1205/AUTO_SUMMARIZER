@@ -1,9 +1,21 @@
+# Python
+.venv/
+venv/
 __pycache__/
 *.pyc
-.env
-.ipynb_checkpoints/
-.vscode/
-venv/
+*.pyo
 
-# ignore trained model files
+# Environment
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
+
+# Hugging Face / Torch cache
+.cache/
+
+# Trained model files (local only)
 model/auto_summarizer_model/
