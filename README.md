@@ -9,7 +9,7 @@ A **Text Summarization Web Application** that generates concise summaries from l
 - Transformer-based model (BART)
 - REST API for real-time inference
 - Clean, modular backend structure
-- Easy integration with frontend applications
+- Easy integration with frontend applications 
 
 ---
 
