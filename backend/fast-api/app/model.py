@@ -8,7 +8,16 @@ model = BartForConditionalGeneration.from_pretrained(MODEL_NAME)
 
 model.eval()
 
+LENGTH_MAP = {
+    150: 200,
+    250: 300,
+    375: 450,
+    500: 600
+}
+
 def summarize_text(text: str, max_length: int = 150) -> str:
+    model_max_length = LENGTH_MAP.get(max_length, 200)
+
     inputs = tokenizer(
         text,
         return_tensors="pt",
@@ -20,7 +29,8 @@ def summarize_text(text: str, max_length: int = 150) -> str:
         summary_ids = model.generate(
             inputs["input_ids"],
             num_beams=4,
-            max_length=max_length,
+            max_length=model_max_length,
+            min_length=100,
             early_stopping=True
         )
 
