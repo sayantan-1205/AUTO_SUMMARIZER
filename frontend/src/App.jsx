@@ -9,7 +9,7 @@ function App() {
   return (
     <>
       <Navbar/>
-      <Manager/>
+      <Manager className="w-full"/>
       <Footer className="fixed bottom-0 w-full"/>
     </>
   )
