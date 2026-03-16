@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
@@ -127,69 +126,109 @@ const Manager = () => {
   };
 
   return (
-    <div className="min-h-[85vh] bg-gray-900 text-white">
+    // <div className="min-h-[85vh] bg-gray-900 text-white">
+    <div className="min-h-[85vh] bg-gradient-to-br from-blue-950 via-gray-950 to-blue-950 text-white">
+
       <div className="input p-10 pb-2 ">
+
+        {/* TEXT INPUT */}
         <div className="text_input bg-gray-950 p-3 mb-3 border-2 border-gray-800 rounded-lg shadow-[5px_0_10px_-5px_rgba(255,255,255,0.4),_-5px_0_10px_-5px_rgba(255,255,255,0.4)]">
-          <h1 className="font-bold"> Enter text</h1>
+          <h1 className="font-bold"> Enter Text</h1>
           <textarea
             value={textValue}
-            onChange={e => setTextValue(e.target.value)}
+            onChange={e => {
+              setTextValue(e.target.value);
+              setImageFile(null);
+              setPdfFile(null);
+            }}
             className="text_area border border-gray-300 rounded p-2 w-full h-50 hover:scale-101 transition duration-300"
             placeholder="Enter text here..."
           />
         </div>
 
-        <div className="img&pdf_input flex gap-5">
-          <div className="img_input flex p-3 gap-5  bg-gray-950 mb-3 border-2 border-gray-800 rounded-lg shadow-[5px_0_10px_-5px_rgba(255,255,255,0.4),_-5px_0_10px_-5px_rgba(255,255,255,0.4)] ">
+        {/* IMAGE + PDF */}
+        <div className="img&pdf_input flex flex-col md:flex-row gap-5">
+
+          {/* IMAGE INPUT */}
+          <div className="img_input flex p-3 gap-5 bg-gray-950 mb-3 border-2 border-gray-800 rounded-lg shadow-[5px_0_10px_-5px_rgba(255,255,255,0.4),_-5px_0_10px_-5px_rgba(255,255,255,0.4)] ">
             <h1 className="font-bold"> Upload Image </h1>
             <input
               type="file"
-              onChange={e => setImageFile(e.target.files[0])}
+              accept="image/*"
+              onChange={e => {
+                const file = e.target.files[0];
+
+                if (file && !file.type.startsWith("image/")) {
+                  toast.error("Please upload appropriate file format");
+                  e.target.value = null;
+                  return;
+                }
+
+                setImageFile(file);
+                setPdfFile(null);
+                setTextValue('');
+              }}
               className="file_input bg-gray-800 p-2 border border-gray-300 rounded w-50 hover:scale-103 transition duration-200"
             />
           </div>
 
-          <div className="pdf_input p-3 flex gap-8.5  bg-gray-950 mb-3 border-2 border-gray-800 rounded-lg shadow-[5px_0_10px_-5px_rgba(255,255,255,0.4),_-5px_0_10px_-5px_rgba(255,255,255,0.4)]">
+          {/* PDF INPUT */}
+          <div className="pdf_input p-3 flex gap-8.5 bg-gray-950 mb-3 border-2 border-gray-800 rounded-lg shadow-[5px_0_10px_-5px_rgba(255,255,255,0.4),_-5px_0_10px_-5px_rgba(255,255,255,0.4)]">
             <h1 className="font-bold"> Upload PDF</h1>
             <input
               type="file"
-              onChange={e => setPdfFile(e.target.files[0])}
+              accept="application/pdf"
+              onChange={e => {
+                const file = e.target.files[0];
+
+                if (file && file.type !== "application/pdf") {
+                  toast.error("Please upload appropriate file format");
+                  e.target.value = null;
+                  return;
+                }
+
+                setPdfFile(file);
+                setImageFile(null);
+                setTextValue('');
+              }}
               className="file_input bg-gray-800 p-2 border border-gray-300 rounded w-50 hover:scale-103 transition duration-200"
             />
           </div>
+
         </div>
       </div>
 
+      {/* SUMMARY LENGTH */}
       <div className="summarized-size pt-2 flex flex-col items-center gap-3">
-        <div>
-          <div className="relative w-fit flex gap-4">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="w-52 text-white bg-gradient-to-r from-gray-800 to-gray-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-black font-medium rounded-lg px-4 py-2 text-center"
-            >
-              {summaryType === "Select Summary Length"
-                ? summaryType
-                : `Summary Length : ${summaryType}`}
-            </button>
 
-            {isOpen &&
-              <div className="absolute mt-2 w-48 bg-gray-900 border rounded shadow z-10">
-                {[20, 50, 100, 150, 200, 250, 300, 400, 500].map(size => (
-                  <div
-                    key={size}
-                    onClick={() => {
-                      setSummaryType(size.toString());
-                      setIsOpen(false);
-                    }}
-                    className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
-                  >
-                    {size}
-                  </div>
-                ))}
-              </div>}
-          </div>
+        <div className="relative w-fit flex gap-4">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="w-52 text-white bg-gradient-to-r from-gray-800 to-gray-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-black font-medium rounded-lg px-4 py-2 text-center"
+          >
+            {summaryType === "Select Summary Length"
+              ? summaryType
+              : `Summary Length : ${summaryType}`}
+          </button>
+
+          {isOpen &&
+            <div className="absolute mt-2 w-48 bg-gray-900 border rounded shadow z-10">
+              {[20, 50, 100, 150, 200, 250, 300, 400, 500].map(size => (
+                <div
+                  key={size}
+                  onClick={() => {
+                    setSummaryType(size.toString());
+                    setIsOpen(false);
+                  }}
+                  className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
+                >
+                  {size}
+                </div>
+              ))}
+            </div>}
         </div>
 
+        {/* SUMMARIZE BUTTON */}
         <div className="submit">
           <button
             onClick={handleSummarize}
@@ -199,8 +238,10 @@ const Manager = () => {
             {loading ? "Generating..." : "Summarize"}
           </button>
         </div>
+
       </div>
 
+      {/* OUTPUT */}
       <div className="output pt-0 p-10">
         <h1 className="text-sm italic text-gray-400 p-1"> Here goes your summary:</h1>
 
@@ -228,6 +269,7 @@ const Manager = () => {
         {summary && !loading && (
           <div className="mt-4 flex justify-end gap-3">
 
+            {/* COPY BUTTON */}
             <button
               onClick={handleCopy}
               className="flex gap-2 bg-gray-500 text-white font-semibold px-3 py-1 rounded-lg shadow-lg shadow-black/40 hover:scale-102 active:scale-95 transition-all duration-100"
@@ -245,6 +287,7 @@ const Manager = () => {
               {copied ? "Copied!" : "Copy"}
             </button>
 
+            {/* DOWNLOAD BUTTON */}
             <button
               onClick={handleDownload}
               className="flex gap-2 bg-gray-500 text-white font-semibold px-2 py-1 md:px-3 md:py-1 rounded-lg shadow-lg shadow-black/40 hover:scale-102 active:scale-95 transition-all duration-100"
@@ -254,10 +297,10 @@ const Manager = () => {
 
           </div>
         )}
+
       </div>
     </div>
   );
 };
 
 export default Manager;
-
